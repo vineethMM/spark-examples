@@ -1,15 +1,8 @@
 package com.study.spark
 
-import org.apache.spark.{SparkConf, SparkContext}
-import org.scalatest.{FlatSpec, Matchers}
+import com.study.spark.test.SparkSpec
 
-class WordCountSpec extends FlatSpec with Matchers{
-  val conf = new SparkConf()
-      .setMaster("local[2]")
-        .setAppName("word-count")
-  val sc = new SparkContext(conf)
-
-
+class WordCountSpec extends SparkSpec {
   "WordCount" should  "count words" in {
     val inputRdd = sc.parallelize(List(
       "To be is to do",
@@ -17,7 +10,6 @@ class WordCountSpec extends FlatSpec with Matchers{
     ))
 
    val wordCounts = WordCount.countWords(inputRdd).collect.toSet
-
 
     wordCounts should equal(Set(
       ("To", 2),
@@ -28,5 +20,4 @@ class WordCountSpec extends FlatSpec with Matchers{
       ("do", 2)
     ))
   }
-
 }
