@@ -4,6 +4,7 @@ val projectName = "Spark-examples"
 
 val dependencies = Seq(
   "org.apache.spark" %% "spark-core" % sparkVersion % "provided",
+  "org.apache.spark" %% "spark-mllib" % sparkVersion % "provided",
   // test
   "org.scalatest" %% "scalatest" % "3.0.1" % "test"
 ) 
