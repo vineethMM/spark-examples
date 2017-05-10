@@ -38,6 +38,7 @@ into the technical details. (Stories usually don't have much technical stuff , r
  You can read more about Map-Reduce [here](https://en.wikipedia.org/wiki/MapReduce).
  
 `Hadoop` excels at batch processing. To be more precise HDFS + Map-Reduce, excels batch processing. But definetly there are more 
-tasks you would like to carry out with Hadoop.  
+tasks you would like to carry out with Hadoop than just batch processing.
  
- 
+Some example of tasks you would like to carry out on your massive amount of data are data exploration (most time interactive querying) and 
+iterative processing (for machine learning) and with your processing capacity and memory you may be interested in stream processing.
