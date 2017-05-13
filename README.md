@@ -42,3 +42,4 @@ tasks you would like to carry out with Hadoop than just batch processing.
  
 Some example of tasks you would like to carry out on your massive amount of data are data exploration (most time interactive querying) and 
 iterative processing (for machine learning) and with your processing capacity and memory you may be interested in stream processing.
+Thats where Spark shines, or thats why Spark came into existence.
