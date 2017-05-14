@@ -11,7 +11,7 @@ trait SparkSupport extends BeforeAndAfterAll { self: Suite =>
   override protected def beforeAll(): Unit = {
     super.beforeAll()
 
-    val conf = new SparkConf()
+    val conf = new SparkConf(false)
         .setMaster("local[2]")
         .setAppName("spark-unit-test")
 
