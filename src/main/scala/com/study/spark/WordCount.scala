@@ -20,13 +20,23 @@ object WordCount {
       .reduceByKey(_ + _)
 
   def main(args: Array[String]): Unit = {
+   assert(
+     args.length == 3,
+     s"""
+        |Application expects exactly 3 arguments provided ${args.length}
+        |
+        |<master> <input_path> <output_path>
+      """.stripMargin
+   )
+
     val conf = new SparkConf()
       .setAppName(appName)
+      .setMaster(args(0))
 
     // A SparkContext represents the connection to a Spark cluster
     val sc = new SparkContext(conf)
 
     // all the action goes here
-    countWordsAndPersist(sc, args(0), args(1))
+    countWordsAndPersist(sc, args(1), args(2))
   }
 }
