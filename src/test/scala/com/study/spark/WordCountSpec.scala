@@ -20,8 +20,4 @@ class WordCountSpec extends SparkSpec {
       ("do", 2)
     ))
   }
-
-  it should "write" in {
-
-  }
 }
