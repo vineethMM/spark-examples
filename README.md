@@ -3,7 +3,7 @@
 I love the question `why ?` because it is asking for the purpose of something.
 That is why I would like to start with answering `why ?` :). 
 
-  So let me tell you a story. A story which will give answers to your questions - why spark is out there and why we are interested in it. We won't go too deep into the technical details ( Stories usually do not have a lot of technical stuff, right?). But I want you to imagine that you are the lead character in this fairy tale.
+  So let me tell you a story. A story which will give answers to your questions - why spark is out there and why we are interested in it. We won't go too deep into the technical details ( Stories usually do not have a lot of technical stuff, right?). I want you to imagine that you are the lead character in this fairy tale.
 
   The story begins with a simple, single machine called computer. The three major resources of the computer are CPU, Memory and Physical  Storage. You can use this machine to carry out your data processing needs. Over time, you need to scale out your machine so that you can persist and process more data. But there is definitely a practical limit to the capacity of these three resources in a single machine. Now, what could be the solution to this problem? The Answer is simple. Use a cluster or a collection of computers.
 
