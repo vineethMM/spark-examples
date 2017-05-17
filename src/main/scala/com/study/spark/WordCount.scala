@@ -8,7 +8,7 @@ object WordCount {
 
   def countWordsAndPersist(sc: SparkContext, inputPath: String, outputPath: String) = {
     val input = sc.textFile(inputPath)
-    val countByWord = countWords(input)
+    val countByWord = countWords(input).persist()
 
     countByWord.saveAsTextFile(outputPath)
   }

@@ -14,4 +14,13 @@ broadcast variables and accumulators. These RDDs, broad cast variables and accum
 
 Once you have initialised SparkContext next step is to create a RDD[String] from the input text file.
 Its very easy, `sc.textFile(inputPath)` will return a RDD[String]. Each RDD has a set of partitions, by default the RDD we just
-created will have as many number of partitions as the number of HDFS blocks our HDFS files will have.
+created will have as many number of partitions as the number of HDFS blocks our HDFS files will have. If you want to change the 
+number of partitions you can specify it in function call like `sc.textFile(inputpath, 10)`. 
+
+Ok, now we have our RDD[String] ready. Next is to split the lines into words.
+
+val records: RDD[String] = sc.textFile("/path/to/file")
+
+val words:RDD[String] = records.flatMap(_.split("\\s+"))
+
+`flatMap` is a transformation available on RDD. We have two types of methods available on RDD transformations and actions.
