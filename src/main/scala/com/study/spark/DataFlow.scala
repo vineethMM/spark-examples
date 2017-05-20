@@ -11,21 +11,32 @@ case class AccountData(accountNumber: String, cardHolder: String,lastBillDate: S
 
 object DataFlow {
 
-  def tranformAndDedup(cardData: RDD[CardData], cardAccount: RDD[CardAccount]): RDD[AccountData] = {
-    //TODO Fix me
+  def transformAndDedup(cardData: RDD[CardData], cardAccount: RDD[CardAccount]): RDD[AccountData] = {
+    cardData
+      .map(r => (r.cardNumber, r))
+      .reduceByKey{ case (l, r) => if(l.extractDate < r.extractDate) l else r }
+      .join(cardAccount.map(r => (r.cardNumber, r)))
+      .values
+      .map{ case (card, acct) => AccountData(acct.accountNumber, card.cardHolder, card.lastBillDate, card.extractDate) }
   }
 
   def readCardData(sc: SparkContext, inputPath: String): RDD[CardData] = {
-    // TODO Fix me
+    sc.textFile(inputPath)
+      .map(_.split(","))
+      .collect{ case Array(cardNumber, cardHolder, lastBilldate, extractdate) =>
+        CardData(cardNumber, cardHolder, lastBilldate, extractdate)
+      }
   }
 
   def readCardAccount(sc: SparkContext, inputPath: String): RDD[CardAccount] = {
-    // TODO Fix me
+    sc.textFile(inputPath)
+      .map(_.split(","))
+      .collect{ case Array(cardNumber, accoutNumber) => CardAccount(cardNumber, accoutNumber)}
   }
 
   def main(args: Array[String]): Unit = {
     // TODO Read arguments
-    // constrcuts RDDs
+    // construct RDDs
     // transform and dedup
     // persist data
   }

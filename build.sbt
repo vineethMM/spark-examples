@@ -1,5 +1,5 @@
 val sparkVersion = "2.1.0"
-  
+
 val projectName = "Spark-examples"
 
 val dependencies = Seq(
@@ -12,3 +12,7 @@ val dependencies = Seq(
 lazy val main = Project(projectName, base = file("."))
   .settings(libraryDependencies ++= dependencies)
   .settings(scalaVersion := "2.11.8")
+
+coverageEnabled := true
+
+parallelExecution in ThisBuild := false

@@ -23,7 +23,7 @@ class DataFlowSpec extends SparkSpec{
       AccountData("A2", "defg", "2005-06-03", "2017-05-07")
     )
 
-    val actualOutput = DataFlow.tranformAndDedup(cardData, cardAccount).collect.toSet
+    val actualOutput = DataFlow.transformAndDedup(cardData, cardAccount).collect.toSet
 
     actualOutput should equal(expectedOutput)
   }
