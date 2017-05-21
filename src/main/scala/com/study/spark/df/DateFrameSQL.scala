@@ -2,7 +2,7 @@ package com.study.spark.df
 
 import org.apache.spark.sql.{DataFrame, SparkSession}
 
-case class People(name: String, gender: String, age: Int)
+case class Person(name: String, gender: String, age: Int)
 
 object DateFrameSQL {
   val spark = SparkSession
@@ -26,12 +26,12 @@ object DateFrameSQL {
     )
   }
 
-  def findYoungestWithSql(peopleDF: DataFrame): List[People] = {
+  def findYoungestWithSql(peopleDF: DataFrame): Set[Person] = {
     peopleDF
       .join(peopleDF.groupBy().min("age"), $"age" === $"min(age)")
-      .select('name, 'age)
+      .select('name, 'gender ,'age)
       .collect
-      .map(r => People(r.getAs[String]("name"), r.getAs[String]("gender"), r.getAs[Int]("age")))
-      .toList
+      .map(r => Person(r.getAs[String]("name"), r.getAs[String]("gender"), r.getAs[Int]("age")))
+      .toSet
   }
 }
