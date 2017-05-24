@@ -20,13 +20,15 @@ object DateFrameSQL {
 
     println(
       s"""
-         |Youngest poeple:
+         |Youngest people:
          |${youngestPeople.map(_.name).mkString("\n")}
        """.stripMargin
     )
   }
 
   def findYoungestWithSql(peopleDF: DataFrame): Set[Person] = {
+    peopleDF.filter($"age" > 1)
+
     peopleDF
       .join(peopleDF.groupBy().min("age"), $"age" === $"min(age)")
       .select('name, 'gender ,'age)
