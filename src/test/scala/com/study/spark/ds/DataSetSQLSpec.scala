@@ -9,7 +9,6 @@ class DataSetSQLSpec  extends SparkSpec{
     val spark = session
     import spark.implicits._
 
-
     val inputDS = List(
       Person("p1", "M", 22),
       Person("p2", "F", 45),

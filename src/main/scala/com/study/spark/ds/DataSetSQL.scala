@@ -19,7 +19,7 @@ object DataSetSQL {
       .json("examples/src/main/resources/json/people.json")
       .as[Person]
 
-    val youngestPeople = findYoungestWithSql(peopleDF)
+    val youngestPeople = findYoungestWithDataset(peopleDS)
 
     println(
       s"""
@@ -30,10 +30,11 @@ object DataSetSQL {
   }
 
   def findYoungestWithDataset(peopleDS: Dataset[Person]): Set[Person] = {
+    val minAge = peopleDS.map(_.age).reduce(_ min _)
+
     peopleDS
-      .groupByKey(_.age)
-      .mapGroups( (a, b) => (a, b))
-      .reduce((a, b) => if(a._1 < b._1) a else b)
-      ._2.toSet
+      .filter(_.age == minAge)
+      .collect
+      .toSet
   }
 }
