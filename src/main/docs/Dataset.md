@@ -91,16 +91,14 @@ val ageOfPerson  = oneRow.getAs[Int]("age")
 val person3 = Row("name", "person3", "age", 1)
 ```
 
-For Column, scala doc do not provide a definition, it says ac Column can be computed from data of a Dataframe. 
+For Column, scala doc do not provide a definition, it says a Column can be computed from data of a Dataframe. 
 In short, Column is an expression, which can be evaluated for each Row of a DataFrame. Following is from Scala doc.
 
 ```
 /**
- * A column that will be computed based on the data in a `DataFrame`.
- *
+ * A column that will be computed based on the data in a DataFrame.
  * A new column is constructed based on the input columns present in a dataframe:
  *
- * {{{
  *   df("columnName")            // On a specific DataFrame.
  *   col("columnName")           // A generic column no yet associated with a DataFrame.
  *   col("columnName.field")     // Extracting a struct field
@@ -108,12 +106,46 @@ In short, Column is an expression, which can be evaluated for each Row of a Data
  *   $"columnName"               // Scala short hand for a named column.
  *   expr("a + 1")               // A column that is constructed from a parsed SQL Expression.
  *   lit("abc")                  // A column that produces a literal (constant) value.
- * }}}
+ * 
+ * Column objects can be composed to form complex expressions:
  *
- * [[Column]] objects can be composed to form complex expressions:
- *
- * {{{
  *   $"a" + 1
  *   $"a" === $"b"
- * }}}
+```
+
+You can add columns to or drop columns from an existing Dataframe. When you add columns to an existing column, you have make
+sure that the newly added Column can be computed from existing columns in the dataframe. 
+
+a Column from dataframe
+
+```
+ val ageColumn = personDF("age")
+```
+
+you can use this `ageColumn` in a select expression 
+```
+ personDF.select(ageColumn).show
+ 
+ // +---+
+ // |age|
+ // +---+
+ // | 22|
+ // | 40|
+ // +---+
+```
+
+Now, you can compute another column, say agePlusOne from an existing Column.
+```
+ val agePlusOne = ageColumn + 1
+ 
+ personDF.select(agePlusOne).show
+ 
+ // +---------+
+ // |(age + 1)|
+ // +---------+
+ // |       23|
+ // |       41|
+ // +---------+
+ 
+ // you can rename the column, using (ageColumn + 1).name("agePlusOne")
 ```
