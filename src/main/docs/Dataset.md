@@ -10,14 +10,16 @@ The new programming API in Spark unified Dataset and Dataframe APIs and now Data
 Hence all the operations on Dataframe is available with Dataset to. We will start with Dataframe, as it came to Spark first.
 
 ### Dataframes
- Basic idea is to have API where you can 
-switch between RDBS like SQL quries and more flexible RDDs in programming languages(Scala/Java/Python). This is achieved 
+Basic idea is to have API where you can switch between RDBS like SQL quries and more flexible RDDs in programming languages(Scala/Java/Python). This is achieved 
 by making sure that when running a SQL query, results are returned as DataFrame. 
+
+Most of the code here is from spark [programing guide](https://spark.apache.org/docs/latest/sql-programming-guide.html) with
+minor modifications.
 
 ```
 case class Person(name: String, age: Int)
 
-val personDF: DataFrame = List(Person("person1", 22), Person("person2", 40)).toDF // A simple way to create a Dataframe.
+val personDF: org.apache.spark.sql.DataFrame = List(Person("person1", 22), Person("person2", 40)).toDF // A simple way to create a Dataframe.
 
 // Its not a typical use of dataframe, If you have schema upfront ready in a case class spark prefer to use 
 // DataSet[Person] rather tha Dataframe. 
@@ -42,4 +44,76 @@ personDF.select('name).show
 +-------+
 ```
 
-as you can see the columns in 
+as you can see the columns in dataframe is referred by name. You no longer has type safety. Following code snippet demonstrate
+how you can switch between SQL and scala style programming.
+```
+// Register the DataFrame as a global temporary view
+personDF.createOrReplaceTempView("people")
+
+val sqlDF = spark.sql("SELECT * FROM people")
+sqlDF.show()
+
+// +-------+----+
+// |   name| age|
+// +-------+----+
+// |person1|  22|
+// |person2|  40|
+// +-------+----+
+
+```
+
+When dealing with DataFrame you will come across following two constructs frequently. Remember DataFrame = DataSet[Row]
+> a) Row
+
+> b) Column
+
+we will look into these in little detail. From scala doc, definition of `Row` is as follows.
+
+``Represents one row of output from a relational operator.  Allows both generic access by ordinal,
+   which will incur boxing overhead for primitives, as well as native primitive access.``
+   
+i.e it is somewhat similar to one row in a JDBC ResultSet. 
+
+```
+// accessing values from a Row
+
+val oneRow = personDF.head
+
+// accessing by position
+val nameOfPerson = oneRow.getString(0)
+val ageOfperson  = oneRow.getInt(1)
+
+// accesing by name
+val nameOfPerson = oneRow.getAs[String]("name")
+val ageOfPerson  = oneRow.getAs[Int]("age")
+
+// programatically create a Row
+val person3 = Row("name", "person3", "age", 1)
+```
+
+For Column, scala doc do not provide a definition, it says ac Column can be computed from data of a Dataframe. 
+In short, Column is an expression, which can be evaluated for each Row of a DataFrame. Following is from Scala doc.
+
+```
+/**
+ * A column that will be computed based on the data in a `DataFrame`.
+ *
+ * A new column is constructed based on the input columns present in a dataframe:
+ *
+ * {{{
+ *   df("columnName")            // On a specific DataFrame.
+ *   col("columnName")           // A generic column no yet associated with a DataFrame.
+ *   col("columnName.field")     // Extracting a struct field
+ *   col("`a.column.with.dots`") // Escape `.` in column names.
+ *   $"columnName"               // Scala short hand for a named column.
+ *   expr("a + 1")               // A column that is constructed from a parsed SQL Expression.
+ *   lit("abc")                  // A column that produces a literal (constant) value.
+ * }}}
+ *
+ * [[Column]] objects can be composed to form complex expressions:
+ *
+ * {{{
+ *   $"a" + 1
+ *   $"a" === $"b"
+ * }}}
+```
