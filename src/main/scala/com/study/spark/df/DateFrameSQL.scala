@@ -26,12 +26,14 @@ object DateFrameSQL {
     )
   }
 
+  class  MyClass(a: String)
+
   def findYoungestWithSql(peopleDF: DataFrame): Set[Person] = {
     peopleDF
       .join(peopleDF.groupBy().min("age"), $"age" === $"min(age)")
       .select('name, 'gender ,'age)
-      .collect
       .map(r => Person(r.getAs[String]("name"), r.getAs[String]("gender"), r.getAs[Int]("age")))
+      .collect
       .toSet
   }
 }
