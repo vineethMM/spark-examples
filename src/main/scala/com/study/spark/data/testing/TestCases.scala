@@ -1,7 +1,7 @@
 package com.study.spark.data.testing
 
+import org.apache.spark.sql.expressions.Window
 import org.apache.spark.sql.{DataFrame, Row}
-
 import org.apache.spark.sql.functions._
 
 trait TestCases {
@@ -30,5 +30,24 @@ trait TestCases {
 
     nullCountAggregators
       .map{ case (name, coulmn) => (name, aggregatedRow.getAs[Long](coulmn.toString))}
+  }
+
+  def checkForTimeVariance(
+    df: DataFrame,
+    primaryKeys: List[String],
+    efftD: String,
+    expyD: String
+  ) = {
+    val windowSpec = Window
+      .partitionBy()
+      .orderBy(col("*"))
+
+    df.select(col("*") over windowSpec)
+
+
+    df.groupBy(col(""))
+      .
+      .agg(sort_array(col(efftD))
+      .sortWithinPartitions(grouping(""))
   }
 }
