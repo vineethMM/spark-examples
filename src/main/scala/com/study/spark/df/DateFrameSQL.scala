@@ -5,8 +5,7 @@ import org.apache.spark.sql.{DataFrame, SparkSession}
 case class Person(name: String, gender: String, age: Int)
 
 object DateFrameSQL {
-  val spark = SparkSession
-    .builder()
+  val spark = SparkSession.builder()
     .appName("Sql with DataFrame")
     .config("spark.some.config.option", "some-value")
     .getOrCreate()
