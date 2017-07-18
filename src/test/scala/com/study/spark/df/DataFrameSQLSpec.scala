@@ -5,7 +5,6 @@ import com.study.spark.test.SparkSpec
 class DataFrameSQLSpec extends SparkSpec {
 
   "DataFrameSQL" should "find the youngest person" in {
-
     val spark = session
     import spark.implicits._
 
