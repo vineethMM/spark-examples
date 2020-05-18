@@ -39,5 +39,22 @@ In a nutshell each RDD carries following information.
 * Data placement (Important for data locality).
 
 
+### Quick notes on RDD
+
+(Taken from https://databricks.com/blog/2016/07/14/a-tale-of-three-apache-spark-apis-rdds-dataframes-and-datasets.html)
+
+It is an immutable distributed collection of objects, partitioned across nodes in your cluster that can be operated in 
+parallel.
+
+When to use it ?
+* you want low-level transformation and actions and control on your dataset
+* your data is unstructured, such as media streams or streams of text
+* you want to manipulate your data with functional programming constructs than domain specific expressions
+* you don’t care about imposing a schema, such as columnar format, while processing or accessing data attributes 
+  by name or column
+* you can forgo some optimization and performance benefits available with DataFrames and Datasets for structured 
+  and semi-structured data.  
+
+
 
 

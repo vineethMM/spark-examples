@@ -1,4 +1,4 @@
-
+## DataSet/DataFrame
 Dataframe/Dataset were introduced in spark as part of structured data processing. What can a structured data processing can bring 
 more than operations with RDD. In terms of end-user functionality, nothing much. But in terms of performance optimisation 
 structured data processing can do many things. With RDD API the objects that constitute an RDDare completely opaque  to Spark framework
@@ -149,3 +149,17 @@ Now, you can compute another column, say agePlusOne from an existing Column.
  
  // you can rename the column, using (ageColumn + 1).name("agePlusOne")
 ```
+
+## Encoders and Decoders
+By imposing structured data semantics, Spark can  now optimise memory usage,garbage collection and even more like 
+predicate push down. All this is possible because spark know the structure of the data upfront. This enables spark to 
+store the DataFrame as non-jvm objects and in an efficient way. Encoders and decoders are used to serialize and deserialize
+these objects in memory.
+
+By default Encoders and Decoders are defined only for basic objects in Scala, as a result you can only use primitive 
+datatypes or case classed with primitive members in Dataset API.
+
+If at all you need to write a custom complex class, you need to provide an encoder and decoder type classes too.
+
+For more details about memory management and project tungsten, read the below blog post. 
+https://databricks.com/blog/2015/04/28/project-tungsten-bringing-spark-closer-to-bare-metal.html

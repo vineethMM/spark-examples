@@ -14,6 +14,3 @@ lazy val main = Project(projectName, base = file("."))
   .settings(libraryDependencies ++= dependencies)
   .settings(scalaVersion := "2.11.8")
 
-coverageEnabled := true
-
-parallelExecution in ThisBuild := false
